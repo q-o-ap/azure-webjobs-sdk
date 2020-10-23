@@ -102,8 +102,11 @@ namespace Microsoft.Azure.WebJobs.Host.Executors
 
                 await WriteSiteExtensionManifestAsync(combinedCancellationToken);
                                 
-                // TODO: FACAVAL: Chat with Brettsam, this should probably be moved out of here.
-                _loggerFactory.AddProvider(new FunctionOutputLoggerProvider());
+                if (!(_dashboardLoggingSetup is NullDashboardLoggingSetup))
+                {
+                    // TODO: FACAVAL: Chat with Brettsam, this should probably be moved out of here.
+                    _loggerFactory.AddProvider(new FunctionOutputLoggerProvider());
+                }
 
                 IFunctionIndex functions = await _functionIndexProvider.GetAsync(combinedCancellationToken);
 

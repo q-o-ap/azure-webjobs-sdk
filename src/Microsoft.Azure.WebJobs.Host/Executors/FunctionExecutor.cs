@@ -218,7 +218,10 @@ namespace Microsoft.Azure.WebJobs.Host.Executors
 
                 using (functionCancellationTokenSource)
                 {
-                    FunctionOutputLogger.SetOutput(outputLog);
+                    if (!(outputDefinition is NullFunctionOutputDefinition))
+                    {
+                        FunctionOutputLogger.SetOutput(outputLog);
+                    }
 
                     // Must bind before logging (bound invoke string is included in log message).
                     var functionContext = new FunctionBindingContext(
