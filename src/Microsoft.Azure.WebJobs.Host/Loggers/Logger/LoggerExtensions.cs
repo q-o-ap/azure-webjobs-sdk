@@ -21,6 +21,72 @@ namespace Microsoft.Extensions.Logging
            new EventId(325, nameof(LogFunctionRetryAttempt)),
            "Waiting for `{nextDelay}` before retrying function execution. Next attempt: '{attempt}'. Max retry count: '{retryStrategy.MaxRetryCount}'");
 
+        private static readonly Action<ILogger, string, double, double, Exception> _hostProcessCpuStats =
+           LoggerMessage.Define<string, double, double>(
+           LogLevel.Debug,
+           new EventId(326, nameof(HostProcessCpuStats)),
+           "[HostMonitor] Host process CPU stats: History=({formattedCpuLoadHistory}), AvgCpuLoad={avgCpuLoad}, MaxCpuLoad={maxCpuLoad}");
+
+        private static readonly Action<ILogger, double, float, Exception> _hostCpuThresholdExceeded =
+           LoggerMessage.Define<double, float>(
+           LogLevel.Debug,
+           new EventId(327, nameof(HostCpuThresholdExceeded)),
+           "[HostMonitor] Host CPU threshold exceeded ({aggregateCpuLoad} >= {cpuThreshold})");
+
+        private static readonly Action<ILogger, double, Exception> _hostAggregateCpuLoad =
+           LoggerMessage.Define<double>(
+           LogLevel.Debug,
+           new EventId(328, nameof(HostAggregateCpuLoad)),
+           "[HostMonitor] Host aggregate CPU load {aggregateCpuLoad}");
+
+        private static readonly Action<ILogger, string, double, double, Exception> _hostProcessMemoryUsage =
+           LoggerMessage.Define<string, double, double>(
+           LogLevel.Debug,
+           new EventId(329, nameof(HostProcessMemoryUsage)),
+           "[HostMonitor] Host process memory usage: History=({formattedMemoryUsageHistory}), AvgUsage={avgMemoryUsage}, MaxUsage={maxMemoryUsage}");
+
+        private static readonly Action<ILogger, double, double, Exception> _hostMemoryThresholdExceeded =
+           LoggerMessage.Define<double, double>(
+           LogLevel.Debug,
+           new EventId(330, nameof(HostMemoryThresholdExceeded)),
+           "[HostMonitor] Host memory threshold exceeded ({aggregateMemoryUsage} >= {memoryThreshold})");
+
+        private static readonly Action<ILogger, double, Exception> _hostAggregateMemoryUsage =
+           LoggerMessage.Define<double>(
+           LogLevel.Debug,
+           new EventId(331, nameof(HostAggregateMemoryUsage)),
+           "[HostMonitor] Host aggregate memory usage {aggregateMemoryUsage}");
+
+        public static void HostAggregateCpuLoad(this ILogger logger, double aggregateCpuLoad)
+        {
+            _hostAggregateCpuLoad(logger, aggregateCpuLoad, null);
+        }
+
+        public static void HostProcessCpuStats(this ILogger logger, string formattedCpuLoadHistory, double avgCpuLoad, double maxCpuLoad)
+        {
+            _hostProcessCpuStats(logger, formattedCpuLoadHistory, avgCpuLoad, maxCpuLoad, null);
+        }
+
+        public static void HostCpuThresholdExceeded(this ILogger logger, double aggregateCpuLoad, float cpuThreshold)
+        {
+            _hostCpuThresholdExceeded(logger, aggregateCpuLoad, cpuThreshold, null);
+        }
+
+        public static void HostAggregateMemoryUsage(this ILogger logger, double aggregateMemoryUsage)
+        {
+            _hostAggregateMemoryUsage(logger, aggregateMemoryUsage, null);
+        }
+
+        public static void HostProcessMemoryUsage(this ILogger logger, string formattedMemoryUsageHistory, double avgMemoryUsage, double maxMemoryUsage)
+        {
+            _hostProcessMemoryUsage(logger, formattedMemoryUsageHistory, avgMemoryUsage, maxMemoryUsage, null);
+        }
+
+        public static void HostMemoryThresholdExceeded(this ILogger logger, double aggregateMemoryUsage, double memoryThreshold)
+        {
+            _hostMemoryThresholdExceeded(logger, aggregateMemoryUsage, memoryThreshold, null);
+        }
+
         /// <summary>
         /// Logs a metric value.
         /// </summary>

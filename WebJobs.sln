@@ -51,19 +51,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProject
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharpFunctions", "test\TestProjects\FSharpFunctions\FSharpFunctions.fsproj", "{11702A4B-8402-4082-BE38-4F0C2CBBF61D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "test\Benchmarks\Benchmarks.csproj", "{78F8086D-8313-477A-B24F-E475A690880A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "test\Benchmarks\Benchmarks.csproj", "{78F8086D-8313-477A-B24F-E475A690880A}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Microsoft.Azure.WebJobs.Shared\WebJobs.Shared.projitems*{32f7d43d-1dd6-46f3-90fe-99b914de8daa}*SharedItemsImports = 5
-		src\Microsoft.Azure.WebJobs.Shared\WebJobs.Shared.projitems*{39554abe-d7b7-45ff-8d7c-56432abcde3d}*SharedItemsImports = 5
 		src\Microsoft.Azure.WebJobs.Shared.Storage\Microsoft.Azure.WebJobs.Shared.Storage.projitems*{6bed7f8a-a199-4d9d-85d1-6856ee3292c6}*SharedItemsImports = 13
 		src\Microsoft.Azure.WebJobs.Protocols\Microsoft.Azure.WebJobs.Protocols.projitems*{6fcd0852-6019-4cd5-9b7e-0de021a72bd7}*SharedItemsImports = 13
 		src\Microsoft.Azure.WebJobs.Shared.Storage\Microsoft.Azure.WebJobs.Shared.Storage.projitems*{a9733406-267c-4a53-ab07-d3a834e22153}*SharedItemsImports = 5
-		src\Microsoft.Azure.WebJobs.Shared\WebJobs.Shared.projitems*{a9733406-267c-4a53-ab07-d3a834e22153}*SharedItemsImports = 5
 		src\Microsoft.Azure.WebJobs.Shared\WebJobs.Shared.projitems*{add036f5-2170-4b05-9e0a-c2ed0a08a929}*SharedItemsImports = 13
 		src\Microsoft.Azure.WebJobs.Shared.Storage\Microsoft.Azure.WebJobs.Shared.Storage.projitems*{ded33098-fe99-436c-96cc-b59a30bef027}*SharedItemsImports = 5
-		src\Microsoft.Azure.WebJobs.Shared\WebJobs.Shared.projitems*{ded33098-fe99-436c-96cc-b59a30bef027}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

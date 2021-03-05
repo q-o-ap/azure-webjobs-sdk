@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.Azure.WebJobs.Host.Scale;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,9 +19,12 @@ namespace SampleHost
                 .ConfigureWebJobs(b =>
                 {
                     b.AddAzureStorageCoreServices()
-                    .AddAzureStorage()
-                    .AddServiceBus()
-                    .AddEventHubs();
+                    .AddAzureStorage();
+
+                    b.Services.AddOptions<ConcurrencyOptions>().Configure(options =>
+                    {
+                        options.DynamicConcurrencyEnabled = true;
+                    });
                 })
                 .ConfigureAppConfiguration(b =>
                 {
@@ -29,8 +33,17 @@ namespace SampleHost
                 })
                 .ConfigureLogging((context, b) =>
                 {
-                    b.SetMinimumLevel(LogLevel.Debug);
+                    b.SetMinimumLevel(LogLevel.Information);
                     b.AddConsole();
+
+                    b.AddFilter((category, level) =>
+                    {
+                        if (category == "Host.Scale")
+                        {
+                            return true;
+                        }
+                        return level >= LogLevel.Information;
+                    });
 
                     // If this key exists in any config, use it to enable App Insights
                     string appInsightsKey = context.Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];

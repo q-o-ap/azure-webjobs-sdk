@@ -45,6 +45,11 @@ namespace Microsoft.Azure.WebJobs.Logging
         public const string Bindings = "Host.Bindings";
 
         /// <summary>
+        /// The category for scale related logs.
+        /// </summary>
+        public const string Scale = "Host.Scale";
+
+        /// <summary>
         /// The category for function binding access stats.
         /// </summary>
         public const string BindingsAccessStats = "Host.Bindings.AccessStats";

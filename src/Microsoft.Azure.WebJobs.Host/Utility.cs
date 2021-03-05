@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using System;
 using System.Reflection;
 using Microsoft.Azure.WebJobs.Description;
 using Microsoft.Azure.WebJobs.Host;
@@ -12,6 +13,47 @@ namespace Microsoft.Azure.WebJobs
 {
     internal class Utility
     {
+        public static int GetEffectiveCoresCount()
+        {
+            // When not running on VMSS, the dynamic plan has some limits that mean that a given instance is using effectively a single core,
+            // so we should not use Environment.Processor count in this case.
+            var effectiveCores = (IsConsumptionSku() && !IsVMSS()) ? 1 : Environment.ProcessorCount;
+            return effectiveCores;
+        }
+
+        public static bool IsConsumptionSku()
+        {
+            string value = Environment.GetEnvironmentVariable("WEBSITE_SKU");
+            return string.Equals(value, "Dynamic", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool IsVMSS()
+        {
+            string value = Environment.GetEnvironmentVariable("RoleInstanceId");
+            return value != null && value.IndexOf("HostRole", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        public static bool IsElasticPremiumSku()
+        {
+            string value = Environment.GetEnvironmentVariable("WEBSITE_SKU");
+            return string.Equals(value, "ElasticPremium", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool IsAppService()
+        {
+            return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID"));
+        }
+
+        public static bool IsLinuxConsumption()
+        {
+            return !IsAppService() && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CONTAINER_NAME"));
+        }
+
+        public static bool IsDynamicSku()
+        {
+            return IsConsumptionSku() || IsElasticPremiumSku() || IsLinuxConsumption();
+        }
+
         public static IConfigurationSection GetExtensionConfigurationSection<T>(IConfiguration configuration) where T : IExtensionConfigProvider
         {
             return configuration.GetWebJobsExtensionConfigurationSection(GetExtensionConfigurationSectionName<T>());
